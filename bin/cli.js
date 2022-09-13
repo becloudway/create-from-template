@@ -97,7 +97,7 @@ const getRepoBranchNames = async (repo) => {
 
 const askSetupArgs = async () => {
   logger.info('Welcome to the guided setup of your new project.');
-  const defaultRepoBranches = await getRepoBranchNames(repoUrl);
+  const defaultRepoBranches = await getRepoBranchNames(`${repoUrl}.git`);
   const { template } = await prompt([
     {
       type: 'list',
@@ -108,7 +108,7 @@ const askSetupArgs = async () => {
   ]);
   if (template !== 'custom') {
     return {
-      repo: repoUrl,
+      repo: `${repoUrl}.git`,
       branch: template,
     };
   }
