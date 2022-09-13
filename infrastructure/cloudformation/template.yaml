@@ -1,0 +1,135 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Parameters:
+  Environment:
+    Type: String
+    Default: dev
+    AllowedValues:
+      - dev
+      - staging
+      - prod
+  LogLevel:
+    Type: String
+    Default: info
+  # HostedZoneId:
+  #   Type: AWS::Route53::HostedZone::Id
+  #   Description: ID of the Route53 hosted zone for creating the subdomain
+
+# Mappings:
+#   CertificateArn:
+#     dev:
+#       usEast1: arn:aws:acm:us-east-1:XXX:certificate/XXX
+#       euWest1: arn:aws:acm:eu-west-1:XXX:certificate/XXX
+#   CognitoUserPool:
+#     dev:
+#       id: 'XXX'
+#       arn: 'XXX'
+#       clientid: 'XXX'
+
+Conditions:
+  isDev: !Equals [ !Ref Environment, dev ]
+  isProd: !Equals [ !Ref Environment, prod ]
+
+Resources:
+  # DdbTable:
+  #   Type: AWS::DynamoDB::Table
+  #   DeletionPolicy: Retain
+  #   UpdateReplacePolicy: Retain
+  #   Properties:
+  #     TableName: !Sub "items-${Environment}"
+  #     AttributeDefinitions:
+  #       - AttributeName: id
+  #         AttributeType: S
+  #     KeySchema:
+  #       - AttributeName: id
+  #         KeyType: HASH
+  #     BillingMode: PAY_PER_REQUEST
+
+  Api:
+    Type: 'AWS::Serverless::HttpApi'
+    Properties:
+      CorsConfiguration:
+        AllowHeaders:
+          - Content-Type
+          - X-Amz-Date
+          - Authorization
+          - X-Api-Key
+          - X-Amz-Security-Token
+          - X-Force
+          - Cache-Control
+          - Pragma
+          - x-apigateway-header
+        AllowMethods:
+          - GET
+          - PUT
+          - POST
+          - DELETE
+          - OPTIONS
+        AllowOrigins:
+          - !If [isProd, "https://app.XXX", !Sub "https://app.${Environment}.XXX"]
+          - !If [isDev, http://localhost:3000, !Ref AWS::NoValue]
+        ExposeHeaders:
+          - x-apigateway-header
+          - x-amz-date
+        AllowCredentials: true
+      # Auth:
+      #   Authorizers:
+      #     CognitoAuth: # Cognito JWT configuration, can be changed to use any other JWT token in auth header
+      #       IdentitySource: $request.header.Authorization
+      #       JwtConfiguration:
+      #         audience:
+      #           - !FindInMap ['CognitoUserPool', !Ref Environment, 'clientid']
+      #         issuer: !Sub ["https://cognito-idp.${AWS::Region}.amazonaws.com/${userPoolId}", {userPoolId: !FindInMap ['CognitoUserPool', !Ref Environment, 'id']}]
+      # Domain: # For automatic domain DNS mgmnt.
+      #   BasePath: /v1
+      #   CertificateArn: !FindInMap [CertificateArn, !Ref Environment, euWest1]
+      #   DomainName: !If [isProd, "api.XXX", !Sub "api.${Environment}.XXX"]
+      #   Route53:
+      #     HostedZoneId: !Ref HostedZoneId
+
+  VersionLambda:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs16.x
+      # Tracing: Active
+      CodeUri: version-lambda
+      MemorySize: 128
+      Timeout: 5
+      Events:
+        GetVersion:
+          Type: HttpApi
+          Properties:
+            Path: '/version'
+            Method: GET
+            ApiId: !Ref Api
+            # Auth: 
+            #   Authorizer: CognitoAuth
+      Environment:
+        Variables:
+          ENVIRONMENT: !Ref Environment
+          LOG_LEVEL: !Ref LogLevel
+
+  ExampleLambda:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs16.x
+      # Tracing: Active
+      CodeUri: example-lambda
+      MemorySize: 128
+      Timeout: 5
+      Events:
+        GetItem:
+          Type: HttpApi
+          Properties:
+            Path: '/item/{id}'
+            Method: GET
+            ApiId: !Ref Api
+            # Auth: 
+            #   Authorizer: CognitoAuth
+      Environment:
+        Variables:
+          ENVIRONMENT: !Ref Environment
+          LOG_LEVEL: !Ref LogLevel

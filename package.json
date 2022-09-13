@@ -1,0 +1,59 @@
+{
+  "name": "root",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "workspaces": [
+    "functions/*",
+    "libraries/*",
+    "config/",
+    "infrastructure/",
+    "scripts/"
+  ],
+  "packageManager": "yarn@3.1.1",
+  "dependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.18.6",
+    "@babel/plugin-proposal-decorators": "^7.19.0",
+    "@babel/preset-env": "^7.19.0",
+    "@babel/preset-typescript": "^7.18.6",
+    "@cloudway-template/config": "workspace:^",
+    "@types/jest": "^29.0.1",
+    "@types/sinon": "^10.0.13",
+    "@typescript-eslint/eslint-plugin": "^5.36.2",
+    "@typescript-eslint/parser": "^5.36.2",
+    "babel-jest": "^29.0.3",
+    "eslint": "^8.23.1",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jest": "^27.0.4",
+    "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.1",
+    "jest-sinon": "^1.1.0",
+    "lint-staged": "^13.0.3",
+    "prettier": "2.7.1",
+    "ts-jest": "^29.0.0",
+    "turbo": "^1.4.6",
+    "typescript": "4.8.3"
+  },
+  "scripts": {
+    "lint": "yarn turbo run lint",
+    "lint:fix": "yarn turbo run lint:fix",
+    "tsc": "yarn turbo run tsc",
+    "test": "yarn turbo run test",
+    "build": "yarn turbo run build",
+    "clean": "yarn turbo run clean && rm -rf dist/ && rm -rf node_modules/.cache/turbo",
+    "update-package-versions": "yarn workspaces foreach version -i",
+    "postinstall": "husky install"
+  },
+  "lint-staged": {
+    "*.{js,ts}": [
+      "eslint --fix"
+    ]
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.103",
+    "aws-sdk": "^2.1214.0"
+  }
+}

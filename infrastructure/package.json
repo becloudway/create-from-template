@@ -1,0 +1,10 @@
+{
+  "name": "infrastructure",
+  "version": "0.0.1",
+  "scripts": {
+    "build": "copy-infra"
+  },
+  "devDependencies": {
+    "@cloudway-template/scripts": "workspace:^"
+  }
+}

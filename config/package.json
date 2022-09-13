@@ -1,0 +1,13 @@
+{
+  "name": "@cloudway-template/config",
+  "version": "0.0.1",
+  "private": true,
+  "packageManager": "yarn@3.1.1",
+  "files": [
+    "tsconfig.json"
+  ],
+  "devDependencies": {
+    "jest": "^29.0.3",
+    "typescript": "4.8.3"
+  }
+}

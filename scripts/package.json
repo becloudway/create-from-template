@@ -1,0 +1,22 @@
+{
+  "name": "@cloudway-template/scripts",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "copy-infra": "./copy-infra-files.js",
+    "package-single-lambda": "./build-single.js"
+  },
+  "scripts": {
+    "lint": "eslint",
+    "lint:fix": "eslint --fix"
+  },
+  "dependencies": {
+    "archiver": "^5.3.1",
+    "copyfiles": "^2.4.1",
+    "esbuild": "^0.15.7",
+    "pretty-bytes": "^6.0.0",
+    "winston": "^3.8.2",
+    "yargs": "^17.5.1"
+  }
+}
