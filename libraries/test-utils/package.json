@@ -1,5 +1,5 @@
 {
-  "name": "example-lambda",
+  "name": "@cloudway-template/test-utils",
   "version": "0.0.1",
   "main": "src/index",
   "files": [
@@ -10,18 +10,11 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "tsc": "tsc -p tsconfig.json",
-    "build": "package-single-lambda",
     "clean": "rm -rf ./.turbo && rm -rf tsconfig.tsbuildinfo"
-  },
-  "dependencies": {
-    "@cloudway-template/http-router": "workspace:^",
-    "http-errors": "^2.0.0"
   },
   "devDependencies": {
     "@cloudway-template/config": "workspace:^",
     "@cloudway-template/scripts": "workspace:^",
-    "@cloudway-template/test-utils": "workspace:^",
-    "@types/http-errors": "^2",
     "eslint": "^8.23.1",
     "jest": "^29.0.3",
     "sinon": "^14.0.0",
