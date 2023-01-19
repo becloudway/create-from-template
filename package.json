@@ -1,0 +1,61 @@
+{
+  "name": "root",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "libraries/*",
+    "config/",
+    "scripts/"
+  ],
+  "packageManager": "yarn@3.2.4",
+  "dependencies": {
+    "@cloudway-template/config": "workspace:^",
+    "@nestjs/schematics": "^9.0.0",
+    "@nestjs/testing": "^9.0.0",
+    "@types/express": "^4.17.13",
+    "@types/fs-extra": "^11",
+    "@types/jest": "29.2.6",
+    "@types/node": "18.11.18",
+    "@types/sinon": "^10.0.13",
+    "@types/supertest": "^2.0.11",
+    "@typescript-eslint/eslint-plugin": "^5.48.2",
+    "@typescript-eslint/parser": "^5.48.2",
+    "eslint": "^8.32.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jest": "^27.2.1",
+    "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.3",
+    "jest-sinon": "^1.1.0",
+    "lint-staged": "^13.1.0",
+    "prettier": "2.8.3",
+    "source-map-support": "^0.5.20",
+    "supertest": "^6.1.3",
+    "ts-jest": "29.0.5",
+    "ts-loader": "^9.2.3",
+    "ts-node": "^10.0.0",
+    "tsconfig-paths": "4.1.2",
+    "turbo": "^1.7.0",
+    "typescript": "4.9.4"
+  },
+  "scripts": {
+    "lint": "yarn turbo run lint",
+    "lint:fix": "yarn turbo run lint:fix",
+    "lint:all": "eslint . --fix",
+    "tsc": "yarn turbo run tsc",
+    "test": "yarn turbo run test",
+    "build": "yarn turbo run build",
+    "clean": "yarn turbo run clean && rm -rf dist/ && rm -rf node_modules/.cache/turbo",
+    "update-package-versions": "yarn workspaces foreach version -i",
+    "postinstall": "husky install"
+  },
+  "lint-staged": {
+    "*.{js,ts}": [
+      "eslint --fix"
+    ]
+  }
+}

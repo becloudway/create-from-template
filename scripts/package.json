@@ -1,0 +1,24 @@
+{
+  "name": "@cloudway-template/scripts",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "package-app": "./build-app.js"
+  },
+  "scripts": {
+    "lint": "eslint",
+    "lint:fix": "eslint --fix"
+  },
+  "dependencies": {
+    "fork-ts-checker-webpack-plugin": "^7.3.0",
+    "fs-extra": "^11.1.0",
+    "ts-loader": "^9.4.2",
+    "typescript": "^4.9.4",
+    "webpack": "^5.75.0",
+    "webpack-node-externals": "^3.0.0",
+    "winston": "^3.8.2",
+    "yargs": "^17.6.2",
+    "zx": "^7.1.1"
+  }
+}
